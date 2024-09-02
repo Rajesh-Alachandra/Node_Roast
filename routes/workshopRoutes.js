@@ -8,6 +8,5 @@ router.get('/', workshopController.getAllWorkshops);
 router.get('/:id', workshopController.getWorkshopById);
 router.put('/:id', workshopController.updateWorkshop);
 router.delete('/:id', workshopController.deleteWorkshop);
-router.post('/:id/enroll', workshopController.enrollWorkshop);
 
 module.exports = router;
