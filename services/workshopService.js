@@ -1,45 +1,45 @@
-// services/workshopService.js
-const Workshop = require('../models/workshop');
-const Enrollment = require("../models/Enrollment")
+// Importing required models
+const Workshop = require('../models/workshop'); // Workshop model
+const Enrollment = require('../models/Enrollment'); // Enrollment model
 
-// Create a new workshop
+// Service to create a new workshop
 exports.createWorkshop = async (workshopData) => {
-    console.log(workshopData);
-    const workshop = new Workshop(workshopData);
-    return await workshop.save();
+    console.log(workshopData); // Log workshop data for debugging purposes
+    const workshop = new Workshop(workshopData); // Create a new workshop instance with provided data
+    return await workshop.save(); // Save the workshop to the database and return it
 };
 
-// Get all workshops
+// Service to get all workshops
 exports.getAllWorkshops = async () => {
-    return await Workshop.find();
+    return await Workshop.find(); // Fetch all workshop entries from the database
 };
 
-// Get a single workshop by ID
+// Service to get a single workshop by ID
 exports.getWorkshopById = async (id) => {
-    return await Workshop.findById(id);
+    return await Workshop.findById(id); // Fetch a single workshop by its ID
 };
 
-// Update a workshop by ID
+// Service to update a workshop by ID
 exports.updateWorkshop = async (id, workshopData) => {
-    return await Workshop.findByIdAndUpdate(id, workshopData, { new: true });
+    return await Workshop.findByIdAndUpdate(id, workshopData, { new: true }); // Update the workshop and return the updated entry
 };
 
-// Delete a workshop by ID
+// Service to delete a workshop by ID
 exports.deleteWorkshop = async (id) => {
-    return await Workshop.findByIdAndDelete(id);
+    return await Workshop.findByIdAndDelete(id); // Delete the workshop by its ID and return the deleted entry
 };
 
-// Enroll in a workshop after payment success
+// Service to enroll a user in a workshop after payment success
 exports.enrollInWorkshop = async (workshopId, userId) => {
-    const workshop = await Workshop.findById(workshopId);
+    const workshop = await Workshop.findById(workshopId); // Find the workshop by ID
     if (!workshop || workshop.slots <= 0) {
-        throw new Error('No slots available');
+        throw new Error('No slots available'); // Throw an error if the workshop does not exist or has no available slots
     }
 
     // Check if the user is already enrolled
     const existingEnrollment = await Enrollment.findOne({ user: userId, workshop: workshopId });
     if (existingEnrollment) {
-        throw new Error('User already enrolled in this workshop');
+        throw new Error('User already enrolled in this workshop'); // Throw an error if the user is already enrolled
     }
 
     // Create a new enrollment with payment status as 'completed'
@@ -49,16 +49,16 @@ exports.enrollInWorkshop = async (workshopId, userId) => {
         paymentStatus: 'completed', // Ensure payment is successful before enrolling
     });
 
-    await enrollment.save();
+    await enrollment.save(); // Save the enrollment to the database
 
-    // Reduce available slots
+    // Reduce available slots in the workshop
     workshop.slots -= 1;
-    await workshop.save();
+    await workshop.save(); // Save the updated workshop with reduced slots
 
-    return enrollment;
+    return enrollment; // Return the created enrollment
 };
 
-// Get all workshops a user is enrolled in
+// Service to get all workshops a user is enrolled in
 exports.getEnrolledWorkshopsByUser = async (userId) => {
-    return await Enrollment.find({ user: userId }).populate('workshop');
+    return await Enrollment.find({ user: userId }).populate('workshop'); // Find all enrollments for the user and populate the workshop details
 };
