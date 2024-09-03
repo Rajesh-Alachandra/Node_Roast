@@ -29,6 +29,7 @@ app.use('/api/products', require('./routes/product')); // Routes related to prod
 app.use('/api/categories', require('./routes/categoryRoutes')); // Routes related to categories
 app.use('/workshops', require('./routes/workshopRoutes')); // Routes related to workshops
 app.use('/api/payments', require('./routes/paymentRoutes')); // Routes related to payments
+app.use('/api/cart', require('./routes/cart')); // Routes related to cart
 
 //! Example route to render a page with EJS
 // A route to render the 'index' view template with a title variable
