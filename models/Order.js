@@ -9,8 +9,8 @@ const orderSchema = new mongoose.Schema({
         },
     ],
     totalAmount: { type: Number, required: true },
-    paymentId: { type: String, required: true },
-    status: { type: String, default: 'pending' }, // Can be 'pending', 'completed', etc.
+    paymentId: { type: String, required: true, unique: true },
+    status: { type: String, enum: ['pending', 'completed', 'failed'], default: 'pending' },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);
