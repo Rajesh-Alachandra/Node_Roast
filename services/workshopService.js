@@ -1,6 +1,6 @@
 // Importing required models
 const Workshop = require('../models/workshop'); // Workshop model
-const Enrollment = require('../models/Enrollment'); // Enrollment model
+const Enrollment = require('../trash/Enrollment'); // Enrollment model
 
 // Service to create a new workshop
 exports.createWorkshop = async (workshopData) => {
